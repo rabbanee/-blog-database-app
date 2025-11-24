@@ -5,10 +5,19 @@ import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { toast } from 'react-hot-toast'; // <-- 1. Import toast
 
+interface Post {
+  id: number;
+  title: string;
+  content: string;
+  createdAt: string;
+  author: string;
+}
+
+
 export default function PostDetail() {
   const { id } = useParams();
   const router = useRouter();
-  const [post, setPost] = useState<unknown>(null);
+  const [post, setPost] = useState<Post | null>(null);
 
   useEffect(() => {
     fetch(`/api/posts/${id}`).then(async (res) => {
@@ -38,6 +47,7 @@ export default function PostDetail() {
           toast.error('Failed to delete post.');
         }
       } catch (error) {
+        console.log("this is error: ", error);
         toast.error('An error occurred.');
       }
     }
@@ -47,7 +57,7 @@ export default function PostDetail() {
 
   return (
     <main className="container mt-4">
-      <h1>{(post as { title: string }).title}</h1>
+      <h1>{post?.title}</h1>
       <p className="text-muted">
         {new Date((post as { createdAt: string }).createdAt).toLocaleDateString('id-ID')}
         {' · '} By: {post.author || 'Anonymous'}
