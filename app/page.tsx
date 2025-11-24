@@ -16,6 +16,7 @@ async function getPosts(sortBy: string = 'createdAt', order: string = 'desc') {
  });
 
  if (!res.ok) {
+  console.log("url: ", url.toString());
   console.log("Failed to fetch posts. Res:", res);
   return [];
  }
